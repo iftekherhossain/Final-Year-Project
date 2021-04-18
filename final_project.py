@@ -8,6 +8,12 @@ from gtts import gTTS
 from pygame import mixer
 from datetime import datetime
 import requests
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings(False) # Ignore warning for now
+GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
+GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
 
 def nothing(x):
     pass
@@ -44,17 +50,20 @@ for i,person in enumerate(faces_li):
 print("-----------------------", knowns)
 #-------------------------------------------#
 
-cv2.namedWindow('Digital Switch')
-cv2.createTrackbar("switch_state","Digital Switch",0,1,nothing)
+# cv2.namedWindow('Digital Switch')
+# cv2.createTrackbar("switch_state","Digital Switch",0,1,nothing)
 known_people = len(knowns)
+print("READYYYYY!")
 while True:
-    state = cv2.getTrackbarPos("switch_state","Digital Switch")
-    print(state)
-    if state==1:
-        state = cv2.getTrackbarPos("switch_state","Digital Switch")
+    #state = cv2.getTrackbarPos("switch_state","Digital Switch")
+    #print(state)
+    if GPIO.input(10) == GPIO.HIGH:
         _, frame = cap.read()
         cv2.imwrite("temp.jpg",frame)
-        box = u.detect_face_dnn(net,frame)[0]
+        try:
+            box = u.detect_face_dnn(net,frame)[0]
+        except:
+            continue
         x, y, w, h = box[0], box[1], box[2], box[3]
         tup_box = (x, y, w, h)
         roi = u.return_face(frame,tup_box)
@@ -74,11 +83,13 @@ while True:
         if person_name=="Unknown":
             first_speech = "Hello Stranger!What is your name?"
             u.speak(first_speech)
+            time.sleep(7)
             text1 = None
             while not text1:
                 text1= u.speech_text()
             print(text1)
             person_name+="("+text1[10:]+")"
+            time.sleep(12)
             u.speak("Do you have any message for Mr Iftekher?Please mention the message I will send it to my owner!")
             text2 = None
             while not text2:
