@@ -51,7 +51,8 @@ known_people = len(knowns)
 while True:
     state = cv2.getTrackbarPos("switch_state","Digital Switch")
     print(state)
-    while state==1:
+    if state==1:
+        state = cv2.getTrackbarPos("switch_state","Digital Switch")
         _, frame = cap.read()
         cv2.imwrite("temp.jpg",frame)
         box = u.detect_face_dnn(net,frame)[0]
@@ -88,7 +89,7 @@ while True:
             d_str = d.strftime("%d/%m/%Y %H:%M:%S")
         else:
             first_speech = "Hello {}!How are you?Do you have any message for Mr Iftekher?Please mention the message I will send it to my owner!".format(person_name)
-            time.sleep(5)
+            time.sleep(12)
             u.speak(first_speech)
             text1 = None
             while not text1:
