@@ -9,7 +9,6 @@ from pygame import mixer
 from datetime import datetime
 import requests
 
-
 def nothing(x):
     pass
 
@@ -84,13 +83,12 @@ while True:
             text2 = None
             while not text2:
                 text2= u.speech_text()
-
             d = datetime.now()
             d_str = d.strftime("%d/%m/%Y %H:%M:%S")
         else:
             first_speech = "Hello {}!How are you?Do you have any message for Mr Iftekher?Please mention the message I will send it to my owner!".format(person_name)
-            time.sleep(12)
             u.speak(first_speech)
+            time.sleep(12)
             text1 = None
             while not text1:
                 text1= u.speech_text()
