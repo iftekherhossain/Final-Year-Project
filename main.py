@@ -78,7 +78,7 @@ class Utils:
         print(r2.reason)
     
     def post_fire(self,fire_state):
-        url = 'http://amiftekher.pythonanywhere.com/firestate'
+        url = 'http://amiftekher.pythonanywhere.com/firestate/'
         s= requests.session()
         r1 = s.get(url)
         csrf = r1.cookies['csrftoken']

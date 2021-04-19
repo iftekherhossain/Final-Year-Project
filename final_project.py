@@ -114,8 +114,9 @@ while True:
             count =0
         else:
             count+=1
-        if count==200:
-                u.post_fire("You Are Safe Now")
+        if count==10000:
+            u.post_fire("You Are Safe Now")
+            count=0
  
     if cv2.waitKey(1) & 0xff==ord('q'):
         break  
