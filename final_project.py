@@ -13,7 +13,7 @@ import RPi.GPIO as GPIO
 GPIO.setwarnings(False) # Ignore warning for now
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
 GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
+GPIO.setup(11, GPIO.IN)
 
 def nothing(x):
     pass
@@ -54,6 +54,7 @@ print("-----------------------", knowns)
 # cv2.createTrackbar("switch_state","Digital Switch",0,1,nothing)
 known_people = len(knowns)
 print("READYYYYY!")
+count=0
 while True:
     #state = cv2.getTrackbarPos("switch_state","Digital Switch")
     #print(state)
@@ -106,6 +107,15 @@ while True:
             d = datetime.now()
             d_str = d.strftime("%d/%m/%Y %H:%M:%S")
             u.post(person_name,text1,d_str)
+    else:
+        print(count)
+        if GPIO.input(11) == GPIO.LOW:
+            u.post_fire("Fire!Fire!Fire! CALL FIRE BRIGADE ASAP!")
+            count =0
+        else:
+            count+=1
+        if count==200:
+                u.post_fire("You Are Safe Now")
  
     if cv2.waitKey(1) & 0xff==ord('q'):
         break  

@@ -76,3 +76,11 @@ class Utils:
         file= {'image': open('temp.jpg','rb')}
         r2 = s.post(url, files = file,data={'name':name,'message':message,'date':date,'csrfmiddlewaretoken': csrf},headers = dict(Referer=url))
         print(r2.reason)
+    
+    def post_fire(self,fire_state):
+        url = 'http://amiftekher.pythonanywhere.com/firestate'
+        s= requests.session()
+        r1 = s.get(url)
+        csrf = r1.cookies['csrftoken']
+        r2 = s.post(url,data={'fire':fire_state,'csrfmiddlewaretoken': csrf},headers = dict(Referer=url))
+        print(r2.reason)
